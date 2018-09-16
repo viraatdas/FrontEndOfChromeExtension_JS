@@ -6,11 +6,11 @@ function(tabs){
 
 
 
-	postURLfunction();
+	sendURLfunction();
 
 	}
 );
-function postURLfunction(){
+function sendURLfunction() {
 	//run the (url-using) function here
 	chrome.extension.getBackgroundPage().console.log(currentUrl);
 
@@ -25,28 +25,17 @@ function postURLfunction(){
   };
   xhttp.open("GET", "http://127.0.0.1:5000/?url=" + encodeURIComponent(currentUrl), true);
   xhttp.send();
+
+  xhttp.onreadystatechange = function() {
+  if (this.readyState == 4 && this.status == 200) {
+    recieveDataFunction(xhttp.responseText);
+  }
+};
 }
-
-/*
-  var google = require('google');
-  chrome.extension.getBackgroundPage().console.log(google);
-  google.resultsPerPage = 25;
-  var nextCounter = 0;
-
-  google("viraat das", function (err, res){
-    chrome.extension.getBackgroundPage().console.log("hi");
-    if (err) console.error(err);
-
-    for (var i = 0; i < res.links.length; ++i) {
-      var link = res.links[i];
-      chrome.extension.getBackgroundPage().console.log(link.title + ' - ' + link.href);
-      chrome.extension.getBackgroundPage().console.log(link.description + "\n");
-
-
-
+function recieveDataFunction(response) {
+    var data = JSON.parse(response);
+    document.getElementById("theScore").innerHTML = data.num;
+    for(i = 0;i < data.s.length;i++) {
+	document.getElementById("s"+i).innerHTML = data.s[i];
     }
-
-    if (nextCounter < 4) {
-      nextCounter += 1;
-      if (res.next) res.next();
-    }*/
+}
