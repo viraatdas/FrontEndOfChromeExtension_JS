@@ -3,11 +3,9 @@ var currentUrl;
 chrome.tabs.query({'active': true, 'windowId': chrome.windows.WINDOW_ID_CURRENT},
 function(tabs){
     	currentUrl = tabs[0].url;
-
-
-
 	sendURLfunction();
 
+	
 	}
 );
 function sendURLfunction() {
@@ -33,9 +31,11 @@ function sendURLfunction() {
 };
 }
 function recieveDataFunction(response) {
-    var data = JSON.parse(response);
+    //var data = JSON.parse(response);
+    var data = {num:6,s:["Test1","Test2","Test3","Test4","Test5","Test6"]};
+    chrome.extension.getBackgroundPage().console.log(data.s[0]);
     document.getElementById("theScore").innerHTML = data.num;
-    for(i = 0;i < data.s.length;i++) {
+    for(i = 0;i < min(data.s.length,10);i++) {
 	document.getElementById("s"+i).innerHTML = data.s[i];
     }
 }
