@@ -3,9 +3,8 @@ var currentUrl;
 chrome.tabs.query({'active': true, 'windowId': chrome.windows.WINDOW_ID_CURRENT},
 function(tabs){
     	currentUrl = tabs[0].url;
-	sendURLfunction();
-
-	
+	//sendURLfunction();
+	receiveDataFunction();
 	}
 );
 function sendURLfunction() {
@@ -30,12 +29,15 @@ function sendURLfunction() {
   }
 };
 }
-function recieveDataFunction(response) {
+function receiveDataFunction(response) {
     //var data = JSON.parse(response);
-    var data = {num:6,s:["Test1","Test2","Test3","Test4","Test5","Test6"]};
-    chrome.extension.getBackgroundPage().console.log(data.s[0]);
+    var data = {num:6,s:["Test1","Test2","Test3","Test4","Test5","Test6"],l:["https://www.w3schools.com","https://www.w3schools.com","https://www.w3schools.com"]};
     document.getElementById("theScore").innerHTML = data.num;
-    for(i = 0;i < min(data.s.length,10);i++) {
+    for(i = 0;i < Math.min(data.s.length,10);i++) {
 	document.getElementById("s"+i).innerHTML = data.s[i];
+    }
+    for(i = 0;i < Math.min(data.l.length,5);i++) {
+	document.getElementById("s"+(2*i+1)).href = data.l[i];
+	chrome.extension.getBackgroundPage().console.log(2*i+1);
     }
 }
